@@ -33,7 +33,7 @@ class MADDPGAgent(RLAgent):
 
         self.phase = Registry.mapping['world_mapping']['traffic_setting'].param['phase']
         self.one_hot = Registry.mapping['world_mapping']['traffic_setting'].param['one_hot']
-        self.model_dict = Registry.mapping['model_mapping']['model_setting'].param
+        self.model_dict = Registry.mapping['model_mapping']['setting'].param
 
         # get generator for each DQNAgent
         inter_id = self.world.intersection_ids[self.rank]
@@ -54,19 +54,19 @@ class MADDPGAgent(RLAgent):
         else:
             self.ob_length = self.ob_generator.ob_length
 
-        self.gamma = Registry.mapping['model_mapping']['model_setting'].param['gamma']
-        self.grad_clip = Registry.mapping['model_mapping']['model_setting'].param['grad_clip']
-        self.epsilon_decay = Registry.mapping['model_mapping']['model_setting'].param['epsilon_decay']
-        self.epsilon_min = Registry.mapping['model_mapping']['model_setting'].param['epsilon_min']
-        self.epsilon = Registry.mapping['model_mapping']['model_setting'].param['epsilon']
-        self.learning_rate = Registry.mapping['model_mapping']['model_setting'].param['learning_rate']
-        self.vehicle_max = Registry.mapping['model_mapping']['model_setting'].param['vehicle_max']
-        self.batch_size = Registry.mapping['model_mapping']['model_setting'].param['batch_size']
-        self.tau = Registry.mapping['model_mapping']['model_setting'].param['tau']
+        self.gamma = Registry.mapping['model_mapping']['setting'].param['gamma']
+        self.grad_clip = Registry.mapping['model_mapping']['setting'].param['grad_clip']
+        self.epsilon_decay = Registry.mapping['model_mapping']['setting'].param['epsilon_decay']
+        self.epsilon_min = Registry.mapping['model_mapping']['setting'].param['epsilon_min']
+        self.epsilon = Registry.mapping['model_mapping']['setting'].param['epsilon']
+        self.learning_rate = Registry.mapping['model_mapping']['setting'].param['learning_rate']
+        self.vehicle_max = Registry.mapping['model_mapping']['setting'].param['vehicle_max']
+        self.batch_size = Registry.mapping['model_mapping']['setting'].param['batch_size']
+        self.tau = Registry.mapping['model_mapping']['setting'].param['tau']
 
         self.best_epoch = 0
         # param
-        self.local_q_learn = Registry.mapping['model_mapping']['model_setting'].param['local_q_learn']
+        self.local_q_learn = Registry.mapping['model_mapping']['setting'].param['local_q_learn']
         self.action = 0
         self.last_action = 0
         self.q_length = 0

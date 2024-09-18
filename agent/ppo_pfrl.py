@@ -47,7 +47,7 @@ class IPPO_pfrl(RLAgent):
 
         self.phase = Registry.mapping['world_mapping']['traffic_setting'].param['phase']
         self.one_hot = Registry.mapping['world_mapping']['traffic_setting'].param['one_hot']
-        self.model_dict = Registry.mapping['model_mapping']['model_setting'].param
+        self.model_dict = Registry.mapping['model_mapping']['setting'].param
 
         # get generator for each DQNAgent
         inter_id = self.world.intersection_ids[self.rank]
@@ -60,7 +60,7 @@ class IPPO_pfrl(RLAgent):
                                                      in_only=True, average='all', negative=True)
         self.action_space = gym.spaces.Discrete(len(self.world.id2intersection[inter_id].phases))
 
-        self.learning_rate = Registry.mapping['model_mapping']['model_setting'].param['learning_rate']
+        self.learning_rate = Registry.mapping['model_mapping']['setting'].param['learning_rate']
 
         if self.phase:
             if self.one_hot:

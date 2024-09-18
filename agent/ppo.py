@@ -33,7 +33,7 @@ class PPOAgent(RLAgent):
 
         self.phase = Registry.mapping['world_mapping']['traffic_setting'].param['phase']
         self.one_hot = Registry.mapping['world_mapping']['traffic_setting'].param['one_hot']
-        self.model_dict = Registry.mapping['model_mapping']['model_setting'].param
+        self.model_dict = Registry.mapping['model_mapping']['setting'].param
 
         # get generator for each DQNAgent
         inter_id = self.world.intersection_ids[self.rank]
@@ -54,15 +54,15 @@ class PPOAgent(RLAgent):
         else:
             self.ob_length = self.ob_generator.ob_length
 
-        self.gamma = Registry.mapping['model_mapping']['model_setting'].param['gamma']
-        self.grad_clip = Registry.mapping['model_mapping']['model_setting'].param['grad_clip']
-        self.epsilon = Registry.mapping['model_mapping']['model_setting'].param['epsilon']
-        self.epsilon_decay = Registry.mapping['model_mapping']['model_setting'].param['epsilon_decay']
-        self.epsilon_min = Registry.mapping['model_mapping']['model_setting'].param['epsilon_min']
-        self.learning_rate = Registry.mapping['model_mapping']['model_setting'].param['learning_rate']
-        self.vehicle_max = Registry.mapping['model_mapping']['model_setting'].param['vehicle_max']
-        self.batch_size = Registry.mapping['model_mapping']['model_setting'].param['batch_size']
-        self.update_interval = Registry.mapping['model_mapping']['model_setting'].param['update_interval']
+        self.gamma = Registry.mapping['model_mapping']['setting'].param['gamma']
+        self.grad_clip = Registry.mapping['model_mapping']['setting'].param['grad_clip']
+        self.epsilon = Registry.mapping['model_mapping']['setting'].param['epsilon']
+        self.epsilon_decay = Registry.mapping['model_mapping']['setting'].param['epsilon_decay']
+        self.epsilon_min = Registry.mapping['model_mapping']['setting'].param['epsilon_min']
+        self.learning_rate = Registry.mapping['model_mapping']['setting'].param['learning_rate']
+        self.vehicle_max = Registry.mapping['model_mapping']['setting'].param['vehicle_max']
+        self.batch_size = Registry.mapping['model_mapping']['setting'].param['batch_size']
+        self.update_interval = Registry.mapping['model_mapping']['setting'].param['update_interval']
         assert(self.update_interval == self.buffer_size)
 
         # generate samples

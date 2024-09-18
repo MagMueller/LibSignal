@@ -25,7 +25,7 @@ class MADDPGAgent(RLAgent):
         self.buffer_size = Registry.mapping['trainer_mapping']['setting'].param['buffer_size']
         self.replay_buffer = deque(maxlen=self.buffer_size)
 
-        self.batch_size = Registry.mapping['model_mapping']['model_setting'].param['batch_size']
+        self.batch_size = Registry.mapping['model_mapping']['setting'].param['batch_size']
 
         self.world = world
         self.sub_agents = len(self.world.id2intersection)
@@ -224,18 +224,18 @@ class MADDPG_SUBAgent(object):
         self.critic = None
         self.target_critic = None
 
-        self.gamma = Registry.mapping['model_mapping']['model_setting'].param['gamma']
-        self.tau = Registry.mapping['model_mapping']['model_setting'].param['tau']
-        self.grad_clip = Registry.mapping['model_mapping']['model_setting'].param['grad_clip']
-        self.epsilon = Registry.mapping['model_mapping']['model_setting'].param['epsilon']
-        self.epsilon_decay = Registry.mapping['model_mapping']['model_setting'].param['epsilon_decay']
-        self.epsilon_min = Registry.mapping['model_mapping']['model_setting'].param['epsilon_min']
-        self.vehicle_max = Registry.mapping['model_mapping']['model_setting'].param['vehicle_max']
-        self.batch_size = Registry.mapping['model_mapping']['model_setting'].param['batch_size']
-        self.alpha = Registry.mapping['model_mapping']['model_setting'].param['alpha']
-        self.beta = Registry.mapping['model_mapping']['model_setting'].param['beta']
-        self.fc1 = Registry.mapping['model_mapping']['model_setting'].param['fc1']
-        self.fc2 = Registry.mapping['model_mapping']['model_setting'].param['fc2']
+        self.gamma = Registry.mapping['model_mapping']['setting'].param['gamma']
+        self.tau = Registry.mapping['model_mapping']['setting'].param['tau']
+        self.grad_clip = Registry.mapping['model_mapping']['setting'].param['grad_clip']
+        self.epsilon = Registry.mapping['model_mapping']['setting'].param['epsilon']
+        self.epsilon_decay = Registry.mapping['model_mapping']['setting'].param['epsilon_decay']
+        self.epsilon_min = Registry.mapping['model_mapping']['setting'].param['epsilon_min']
+        self.vehicle_max = Registry.mapping['model_mapping']['setting'].param['vehicle_max']
+        self.batch_size = Registry.mapping['model_mapping']['setting'].param['batch_size']
+        self.alpha = Registry.mapping['model_mapping']['setting'].param['alpha']
+        self.beta = Registry.mapping['model_mapping']['setting'].param['beta']
+        self.fc1 = Registry.mapping['model_mapping']['setting'].param['fc1']
+        self.fc2 = Registry.mapping['model_mapping']['setting'].param['fc2']
         self.chkpt_dir = Registry.mapping['logger_mapping']['output_path'].path
 
     def create_model(self, obs_dim, actions_dim):
