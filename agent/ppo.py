@@ -31,8 +31,8 @@ class PPOAgent(RLAgent):
         self.sub_agents = 1
         self.rank = rank
 
-        self.phase = Registry.mapping['world_mapping']['traffic_setting'].param['phase']
-        self.one_hot = Registry.mapping['world_mapping']['traffic_setting'].param['one_hot']
+        self.phase = Registry.mapping['model_mapping']['setting'].param['phase']
+        self.one_hot = Registry.mapping['model_mapping']['setting'].param['one_hot']
         self.model_dict = Registry.mapping['model_mapping']['setting'].param
 
         # get generator for each DQNAgent
@@ -168,7 +168,7 @@ class PPOAgent(RLAgent):
         pass
 
     def load_model(self, e):
-        model_name = os.path.join(Registry.mapping['logger_mapping']['output_path'].path,
+        model_name = os.path.join(Registry.mapping['logger_mapping']['path'].path,
                                   'model', f'{e}_{self.rank}.pt')
         self.model = self._build_model()
         self.model.load_state_dict(torch.load(model_name))
@@ -176,7 +176,7 @@ class PPOAgent(RLAgent):
         self.target_model.load_state_dict(torch.load(model_name))
 
     def save_model(self, e):
-        path = os.path.join(Registry.mapping['logger_mapping']['output_path'].path, 'model')
+        path = os.path.join(Registry.mapping['logger_mapping']['path'].path, 'model')
         if not os.path.exists(path):
             os.makedirs(path)
         model_name = os.path.join(path, f'{e}_{self.rank}.pt')

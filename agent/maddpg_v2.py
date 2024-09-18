@@ -198,8 +198,8 @@ class MADDPG_SUBAgent(object):
     def __init__(self, world, inter_id):
         self.world = world
 
-        self.phase = Registry.mapping['world_mapping']['traffic_setting'].param['phase']
-        self.one_hot = Registry.mapping['world_mapping']['traffic_setting'].param['one_hot']
+        self.phase = Registry.mapping['model_mapping']['setting'].param['phase']
+        self.one_hot = Registry.mapping['model_mapping']['setting'].param['one_hot']
 
         self.inter = inter_id
         self.inter_obj = self.world.id2intersection[inter_id]
@@ -236,7 +236,7 @@ class MADDPG_SUBAgent(object):
         self.beta = Registry.mapping['model_mapping']['setting'].param['beta']
         self.fc1 = Registry.mapping['model_mapping']['setting'].param['fc1']
         self.fc2 = Registry.mapping['model_mapping']['setting'].param['fc2']
-        self.chkpt_dir = Registry.mapping['logger_mapping']['output_path'].path
+        self.chkpt_dir = Registry.mapping['logger_mapping']['path'].path
 
     def create_model(self, obs_dim, actions_dim):
         # use global information from all agents to create critic

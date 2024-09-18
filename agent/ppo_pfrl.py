@@ -45,8 +45,8 @@ class IPPO_pfrl(RLAgent):
         self.buffer_size = Registry.mapping['trainer_mapping']['setting'].param['buffer_size']
         self.replay_buffer = self.replay_buffer = deque(maxlen=self.buffer_size)
 
-        self.phase = Registry.mapping['world_mapping']['traffic_setting'].param['phase']
-        self.one_hot = Registry.mapping['world_mapping']['traffic_setting'].param['one_hot']
+        self.phase = Registry.mapping['model_mapping']['setting'].param['phase']
+        self.one_hot = Registry.mapping['model_mapping']['setting'].param['one_hot']
         self.model_dict = Registry.mapping['model_mapping']['setting'].param
 
         # get generator for each DQNAgent
@@ -196,13 +196,13 @@ class IPPO_pfrl(RLAgent):
                          max_grad_norm=0.5)
 
     def load_model(self, e):
-        model_name = os.path.join(Registry.mapping['logger_mapping']['output_path'].path,
+        model_name = os.path.join(Registry.mapping['logger_mapping']['path'].path,
                                   'model', f'{e}_{self.rank}.pt')
         self._build_model()
         self.model.load_state_dict(torch.load(model_name))
 
     def save_model(self, e):
-        path = os.path.join(Registry.mapping['logger_mapping']['output_path'].path, 'model')
+        path = os.path.join(Registry.mapping['logger_mapping']['path'].path, 'model')
         if not os.path.exists(path):
             os.makedirs(path)
         model_name = os.path.join(path, f'{e}_{self.rank}.pt')

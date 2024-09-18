@@ -31,8 +31,8 @@ class MADDPGAgent(RLAgent):
         self.n_intersections = len(world.id2intersection)
         self.agents = None
 
-        self.phase = Registry.mapping['world_mapping']['traffic_setting'].param['phase']
-        self.one_hot = Registry.mapping['world_mapping']['traffic_setting'].param['one_hot']
+        self.phase = Registry.mapping['model_mapping']['setting'].param['phase']
+        self.one_hot = Registry.mapping['model_mapping']['setting'].param['one_hot']
         self.model_dict = Registry.mapping['model_mapping']['setting'].param
 
         # get generator for each DQNAgent
@@ -317,9 +317,9 @@ class MADDPGAgent(RLAgent):
         self.target_q_model.load_state_dict(q_weights)
 
     def load_model(self, e):
-        model_p_name = os.path.join(Registry.mapping['logger_mapping']['output_path'].path,
+        model_p_name = os.path.join(Registry.mapping['logger_mapping']['path'].path,
                                     'model_p', f'{e}_{self.rank}.pt')
-        model_q_name = os.path.join(Registry.mapping['logger_mapping']['output_path'].path,
+        model_q_name = os.path.join(Registry.mapping['logger_mapping']['path'].path,
                                     'model_q', f'{e}_{self.rank}.pt')
         self.model_q = self._build_model(self.q_length, 1)
         self.model_p = self._build_model(self.ob_length, self.action_space.n)
@@ -328,8 +328,8 @@ class MADDPGAgent(RLAgent):
         self.sync_network()
 
     def save_model(self, e):
-        path_p = os.path.join(Registry.mapping['logger_mapping']['output_path'].path, 'model_p')
-        path_q = os.path.join(Registry.mapping['logger_mapping']['output_path'].path, 'model_q')
+        path_p = os.path.join(Registry.mapping['logger_mapping']['path'].path, 'model_p')
+        path_q = os.path.join(Registry.mapping['logger_mapping']['path'].path, 'model_q')
         if not os.path.exists(path_p):
             os.makedirs(path_p)
         if not os.path.exists(path_q):
@@ -340,9 +340,9 @@ class MADDPGAgent(RLAgent):
         torch.save(self.q_model.state_dict(), model_q_name)
 
     def load_best_model(self,):
-        model_p_name = os.path.join(Registry.mapping['logger_mapping']['output_path'].path,
+        model_p_name = os.path.join(Registry.mapping['logger_mapping']['path'].path,
                                     'model_p', f'{self.best_epoch}_{self.rank}.pt')
-        model_q_name = os.path.join(Registry.mapping['logger_mapping']['output_path'].path,
+        model_q_name = os.path.join(Registry.mapping['logger_mapping']['path'].path,
                                     'model_q', f'{self.best_epoch}_{self.rank}.pt')
         self.q_model.load_state_dict(torch.load(model_q_name))
         self.p_model.load_state_dict(torch.load(model_p_name))
