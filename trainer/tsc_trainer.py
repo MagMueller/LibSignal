@@ -38,10 +38,20 @@ class TSCTrainer(BaseTrainer):
         # TODO: support SUMO and Openengine later
         
         # TODO: support other dataset in the future
-        self.dataset = Registry.mapping['dataset_mapping'][Registry.mapping['command_mapping']['setting'].param['dataset']](
-            os.path.join(Registry.mapping['logger_mapping']['path'].path,
-                         Registry.mapping['logger_mapping']['setting'].param['data_dir'])
-        )
+        try:
+            dataset_name = Registry.mapping['command_mapping']['setting'].param['dataset']
+            dataset_class = Registry.mapping['dataset_mapping'][dataset_name]
+            data_dir = Registry.mapping['logger_mapping']['setting'].param['data_dir']
+            logger_path = Registry.mapping['logger_mapping']['path'].path
+            
+            self.dataset = dataset_class(os.path.join(logger_path, data_dir))
+        except KeyError as e:
+            print(f"KeyError: {e}")
+            print("Available options for 'dataset':")
+            print(list(Registry.mapping['dataset_mapping'].keys()))
+            print("Available options for 'data_dir':")
+            print(list(Registry.mapping['logger_mapping']['setting'].param.keys()))
+            raise
         self.dataset.initiate(ep=self.episodes, step=self.steps, interval=self.action_interval)
         self.yellow_time = Registry.mapping['trainer_mapping']['setting'].param['yellow_length']
         # consists of path of output dir + log_dir + file handlers name
@@ -188,14 +198,14 @@ class TSCTrainer(BaseTrainer):
             
             self.writeLog("TRAIN", e, self.metric.real_average_travel_time(),\
                 mean_loss, self.metric.rewards(), self.metric.queue(), self.metric.delay(), self.metric.throughput())
-            self.logger.info("step:{}/{}, q_loss:{}, rewards:{}, queue:{}, delay:{}, throughput:{}".format(i, self.steps,\
-                mean_loss, self.metric.rewards(), self.metric.queue(), self.metric.delay(), int(self.metric.throughput())))
+            self.logger.info("step:{}/{}, q_loss:{:.2f}, rewards:{:.2f}, queue:{:.2f}, delay:{:.2f}, throughput:{:.2f}".format(
+                i, self.steps, mean_loss, self.metric.rewards(), self.metric.queue(), self.metric.delay(), self.metric.throughput()))
             if e % self.save_rate == 0:
                 [ag.save_model(e=e) for ag in self.agents]
-            self.logger.info("episode:{}/{}, real avg travel time:{}".format(e, self.episodes, self.metric.real_average_travel_time()))
+            self.logger.info("episode:{}/{}, real avg travel time:{:.2f}".format(e, self.episodes, self.metric.real_average_travel_time()))
             for j in range(len(self.world.intersections)):
-                self.logger.debug("intersection:{}, mean_episode_reward:{}, mean_queue:{}".format(j, self.metric.lane_rewards()[j],\
-                     self.metric.lane_queue()[j]))
+                self.logger.debug("intersection:{}, mean_episode_reward:{:.2f}, mean_queue:{:.2f}".format(
+                    j, self.metric.lane_rewards()[j], self.metric.lane_queue()[j]))
             if self.test_when_train:
                 self.train_test(e)
         # self.dataset.flush([ag.replay_buffer for ag in self.agents])
@@ -229,11 +239,12 @@ class TSCTrainer(BaseTrainer):
                 self.metric.update(rewards)
             if all(dones):
                 break
-        self.logger.info("Test step:{}/{}, travel time :{}, rewards:{}, queue:{}, delay:{}, throughput:{}".format(\
-            e, self.episodes, self.metric.real_average_travel_time(), self.metric.rewards(),\
-            self.metric.queue(), self.metric.delay(), int(self.metric.throughput())))
-        self.writeLog("TEST", e, self.metric.real_average_travel_time(),\
-            100, self.metric.rewards(),self.metric.queue(),self.metric.delay(), self.metric.throughput())
+        self.logger.info("Test step:{}/{}, travel time :{:.2f}, rewards:{:.2f}, queue:{:.2f}, delay:{:.2f}, throughput:{:.2f}".format(
+            e, self.episodes, self.metric.real_average_travel_time(), self.metric.rewards(),
+            self.metric.queue(), self.metric.delay(), self.metric.throughput()))
+        self.writeLog("TEST", e, round(self.metric.real_average_travel_time(), 2),
+            100, round(self.metric.rewards(), 2), round(self.metric.queue(), 2),
+            round(self.metric.delay(), 2), round(self.metric.throughput(), 2))
         return self.metric.real_average_travel_time()
 
     def test(self, drop_load=True):
