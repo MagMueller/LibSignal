@@ -369,9 +369,11 @@ class World(object):
             raise Exception('NOT IMPORTED YET')
         with open(sumo_config) as f:
             sumo_dict = json.load(f)
-        if sumo_dict['gui'] == "True" or sumo_dict['gui'] == True:
+        if sumo_dict['gui'] == "True" or sumo_dict['gui'] == True or sumo_dict['gui'] == "true":
             sumo_cmd = [sumolib.checkBinary('sumo-gui')]
+            print("sumo_cmd", sumo_cmd)
         else:
+            print("sumo_dict['gui']", sumo_dict['gui'])
             sumo_cmd = [sumolib.checkBinary('sumo')]
         if not sumo_dict.get('combined_file'):
             sumo_cmd += ['-n', os.path.join(sumo_dict['dir'], sumo_dict['roadnetFile']),
@@ -387,7 +389,7 @@ class World(object):
         print("building world...")
         self.connection_name = sumo_dict['name']
         self.map = sumo_dict['roadnetFile'].split('/')[-1].split('.')[0]
-        
+        print("sumo cmd", sumo_cmd)
         if self.interface_flag:
             libsumo.start(sumo_cmd)
             self.eng = libsumo

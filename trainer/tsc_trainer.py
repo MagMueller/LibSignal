@@ -97,7 +97,14 @@ class TSCTrainer(BaseTrainer):
         :return: None
         '''
         self.agents = []
-        agent = Registry.mapping['model_mapping'][Registry.mapping['command_mapping']['setting'].param['agent']](self.world, 0)
+        try:
+            agent = Registry.mapping['model_mapping'][Registry.mapping['command_mapping']['setting'].param['agent']](self.world, 0)
+        except KeyError:
+            print("Invalid agent specified. Available options for 'agent':")
+            print(list(Registry.mapping['model_mapping'].keys()))
+            print(Registry.mapping['command_mapping']['setting'].param['agent'])
+            print(Registry.mapping['model_mapping'])
+            raise
         print(agent)
         num_agent = int(len(self.world.intersections) / agent.sub_agents)
         self.agents.append(agent)  # initialized N agents for traffic light control
