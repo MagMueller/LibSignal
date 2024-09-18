@@ -12,7 +12,7 @@ world:
   report_log_mode: normal # cbengine
   report_log_rate: 10
 
-  no_warning: False
+  no_warning: True
   gui: False
 
   rlTrafficLight: True
