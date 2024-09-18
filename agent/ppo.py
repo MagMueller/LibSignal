@@ -20,7 +20,7 @@ from torch.nn.utils import clip_grad_norm_
 class PPOAgent(RLAgent):
     def __init__(self, world, rank):
         super().__init__(world, world.intersection_ids[rank])
-        self.buffer_size = Registry.mapping['trainer_mapping']['trainer_setting'].param['buffer_size']
+        self.buffer_size = Registry.mapping['trainer_mapping']['setting'].param['buffer_size']
         self.replay_buffer_env = deque(maxlen=self.buffer_size)
         self.replay_buffer_prob = deque(maxlen=self.buffer_size)
         # TODO: delete later

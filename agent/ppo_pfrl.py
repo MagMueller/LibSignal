@@ -42,7 +42,7 @@ class IPPO_pfrl(RLAgent):
         self.sub_agents = 1
         self.rank = rank
         self.device = torch.device('cpu')
-        self.buffer_size = Registry.mapping['trainer_mapping']['trainer_setting'].param['buffer_size']
+        self.buffer_size = Registry.mapping['trainer_mapping']['setting'].param['buffer_size']
         self.replay_buffer = self.replay_buffer = deque(maxlen=self.buffer_size)
 
         self.phase = Registry.mapping['world_mapping']['traffic_setting'].param['phase']
